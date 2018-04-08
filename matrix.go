@@ -54,6 +54,9 @@ func Eye(size int) Matrix {
 	return returnMatrix
 }
 
+func (mat Matrix) At(row, col int) (float64) {
+    return (mat.values[row][col])
+}
 func (m Matrix) String() string {
 	var retString bytes.Buffer
 	for i := range m.values {

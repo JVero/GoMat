@@ -45,3 +45,16 @@ func csvToData(data [][]string) [][]float64 {
 	}
 	return returnValue
 }
+
+
+func dataToStrings(mat Matrix) [][]string{
+    numRows, numCols := mat.GetDims()
+    retVal := make([][]string, numRows)
+    for row_ind, row := range(mat.values) {
+        retVal[row_ind] = make([]string, numCols)
+        for col_ind  := range(row) {
+            retVal[row_ind][col_ind] = strconv.FormatFloat(mat.At(row_ind, col_ind), 'E', -1, 64)
+        }
+    }
+    return retVal
+}
