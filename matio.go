@@ -68,9 +68,7 @@ func MatrixToCSV(mat Matrix, fileName string) error {
     }
 
     fileWriter := csv.NewWriter(file)
-    stdoutwriter := csv.NewWriter(os.Stdout)
     err = fileWriter.WriteAll(strings)
-    err = stdoutwriter.WriteAll(strings)
     if err != nil {
         fmt.Println(err.Error())
         return err
