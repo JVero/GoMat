@@ -8,25 +8,25 @@ import (
 type matrix struct {
 	width  int
 	height int
-	values [][]int
+	values [][]float64
 }
 
 // CreateMatrix creates an empty 2D matrix that is xDim, yDim
 func CreateMatrix(rowHeight int, columnWidth int) matrix {
-	matVals := make([][]int, rowHeight)
+	matVals := make([][]float64, rowHeight)
 	for row := range matVals {
-		matVals[row] = make([]int, columnWidth)
+		matVals[row] = make([]float64, columnWidth)
 	}
 	return matrix{rowHeight, columnWidth, matVals}
 }
 
-func (m *matrix) assignValue(row int, column int, val int) {
+func (m *matrix) assignValue(row int, column int, val float64) {
 	m.values[row][column] = val
 }
 
 // InitMatrix is the basic initializer that takes an arbitrary amount of int slices as rows
 // and returns the matrix datatype
-func InitMatrix(numRows int, numCols int, rows ...[]int) matrix {
+func InitMatrix(numRows int, numCols int, rows ...[]float64) matrix {
 	if numRows != len(rows) {
 		return matrix{}
 	}
@@ -36,16 +36,20 @@ func InitMatrix(numRows int, numCols int, rows ...[]int) matrix {
 		}
 	}
 	retMat := CreateMatrix(numRows, numCols)
-	a, b := retMat.GetDims()
-	println(a)
-	println(b)
 	for xval, row := range rows {
 		for yval, matval := range row {
-			println(xval, yval)
 			retMat.assignValue(xval, yval, matval)
 		}
 	}
 	return retMat
+}
+
+func IdentityMatrix(size int) matrix {
+	returnMatrix := CreateMatrix(size, size)
+	for i := 0; i < size; i++ {
+		returnMatrix.assignValue(i, i, 1)
+	}
+	return returnMatrix
 }
 
 func (m matrix) String() string {
@@ -57,7 +61,7 @@ func (m matrix) String() string {
 			retString.WriteString("  ")
 		}
 		for j := range m.values[i] {
-			retString.WriteString(strconv.Itoa(m.values[i][j]))
+			retString.WriteString(strconv.FormatFloat(m.values[i][j], 'E', -1, 64))
 			if j != len(m.values[i])-1 {
 				retString.WriteString(", ")
 			}
