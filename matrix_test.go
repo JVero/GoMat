@@ -1,8 +1,11 @@
 package matrix
 
 import (
+	"fmt"
 	"testing"
 )
+
+var testValue interface{}
 
 func TestInit(t *testing.T) {
 	_ = CreateMatrix(3, 3)
@@ -95,5 +98,10 @@ func TestGetValue(t *testing.T) {
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
-    println(a.At(1,1))
+	fmt.Printf("%v\n", a.At(1, 1))
+}
+
+func TestEye(t *testing.T) {
+	a := Eye(5)
+	fmt.Printf("%v", a)
 }

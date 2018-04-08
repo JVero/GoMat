@@ -1,4 +1,4 @@
-package matrix 
+package matrix
 
 // The purpose of this file is to facilitate io functions, such as loading or saving matrices
 import (
@@ -48,36 +48,33 @@ func csvToData(data [][]string) [][]float64 {
 	return returnValue
 }
 
-
-func dataToStrings(mat Matrix) [][]string{
-    numRows, numCols := mat.Dimensions()
-    retVal := make([][]string, numRows)
-    for row_ind, row := range(mat.values) {
-        retVal[row_ind] = make([]string, numCols)
-        for col_ind  := range(row) {
-            retVal[row_ind][col_ind] = strconv.FormatFloat(mat.At(row_ind, col_ind), 'E', -1, 64)
-        }
-    }
-    return retVal
+func dataToStrings(mat Matrix) [][]string {
+	numRows, numCols := mat.Dimensions()
+	retVal := make([][]string, numRows)
+	for rowInd, row := range mat.values {
+		retVal[rowInd] = make([]string, numCols)
+		for colInd := range row {
+			retVal[rowInd][colInd] = strconv.FormatFloat(mat.At(rowInd, colInd), 'E', -1, 64)
+		}
+	}
+	return retVal
 }
 
-// MatrixToCSV saves the matrix as a .csv file
-func MatrixToCSV(mat Matrix, fileName string) error {
-    strings := dataToStrings(mat)
+// ToCSV saves the matrix as a .csv file
+func ToCSV(mat Matrix, fileName string) error {
+	strings := dataToStrings(mat)
 
-    file, err := os.Create(fileName)
-    if err != nil {
-        return err
-    }
+	file, err := os.Create(fileName)
+	if err != nil {
+		return err
+	}
 
-    fileWriter := csv.NewWriter(file)
-    err = fileWriter.WriteAll(strings)
-    if err != nil {
-        fmt.Println(err.Error())
-        return err
-    }
+	fileWriter := csv.NewWriter(file)
+	err = fileWriter.WriteAll(strings)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
 
-    return nil
+	return nil
 }
-
-

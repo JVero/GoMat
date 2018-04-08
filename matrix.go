@@ -29,11 +29,11 @@ func (m *Matrix) assignValue(row int, column int, val float64) {
 // and returns the Matrix datatype
 func New(numRows int, numCols int, rows ...[]float64) Matrix {
 	if numRows != len(rows) {
-        panic("Matrix: The dimensions of the rows must match numRows")
+		panic("Matrix: The dimensions of the rows must match numRows")
 	}
 	for rowInd := range rows {
 		if len(rows[rowInd]) != numCols {
-            panic("Matrix: The length of all the columns must match numCols")
+			panic("Matrix: The length of all the columns must match numCols")
 		}
 	}
 	retMat := CreateMatrix(numRows, numCols)
@@ -54,8 +54,9 @@ func Eye(size int) Matrix {
 	return returnMatrix
 }
 
-func (mat Matrix) At(row, col int) (float64) {
-    return (mat.values[row][col])
+// At returns the value at row, col
+func (m Matrix) At(row, col int) float64 {
+	return (m.values[row][col])
 }
 func (m Matrix) String() string {
 	var retString bytes.Buffer
@@ -82,8 +83,9 @@ func (m Matrix) String() string {
 // Add m and n
 func (m Matrix) Add(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
-		return Matrix{}
+		panic("Matrix: Dimensions must match")
 	}
+
 	retMat := CreateMatrix(m.width, m.height)
 	for i := range m.values {
 		for j := range m.values[i] {
@@ -94,7 +96,7 @@ func (m Matrix) Add(n Matrix) Matrix {
 
 }
 
-// GetDims is a trivial function that returns the width and the height of the matrix
+// Dimensions is a trivial function that returns the width and the height of the matrix
 func (m Matrix) Dimensions() (int, int) {
 	return m.width, m.height
 }
@@ -102,7 +104,7 @@ func (m Matrix) Dimensions() (int, int) {
 //Sub calculates m - n
 func (m Matrix) Sub(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
-		return Matrix{}
+		panic("Matrix:  Dimensions must match")
 	}
 	retMat := CreateMatrix(m.width, m.height)
 	for i := range m.values {

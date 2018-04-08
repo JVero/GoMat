@@ -1,8 +1,8 @@
 package matrix
 
 import (
+	"fmt"
 	"testing"
-    "fmt"
 )
 
 func TestCSVParse(t *testing.T) {
@@ -10,12 +10,12 @@ func TestCSVParse(t *testing.T) {
 }
 
 func TestCSVToStrings(t *testing.T) {
-    a := LoadCSV("sampledata.csv")
-    _ = dataToStrings(a)
+	a := LoadCSV("sampledata.csv")
+	_ = dataToStrings(a)
 }
 
 func TestSaveMatrix(t *testing.T) {
-    a := LoadCSV("sampledata.csv")
-    b := MatrixToCSV(a, "outputfile.csv")
-    fmt.Printf("%v", b)
+	a := LoadCSV("sampledata.csv")
+	b := ToCSV(a, "outputfile.csv")
+	fmt.Printf("%v", b)
 }
