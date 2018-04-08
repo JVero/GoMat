@@ -5,6 +5,7 @@ import (
 	"strconv"
 )
 
+// Matrix is the default 2D data type that represents a matrix
 type Matrix struct {
 	width  int
 	height int
@@ -75,7 +76,8 @@ func (m Matrix) String() string {
 	return retString.String()
 }
 
-func (m Matrix) add(n Matrix) Matrix {
+// Add m and n
+func (m Matrix) Add(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
 		return Matrix{}
 	}
@@ -89,10 +91,13 @@ func (m Matrix) add(n Matrix) Matrix {
 
 }
 
+// GetDims is a trivial function that returns the width and the height of the matrix
 func (m Matrix) GetDims() (int, int) {
 	return m.width, m.height
 }
-func (m Matrix) sub(n Matrix) Matrix {
+
+//Sub calculates m - n
+func (m Matrix) Sub(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
 		return Matrix{}
 	}
