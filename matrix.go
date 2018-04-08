@@ -12,7 +12,7 @@ type Matrix struct {
 	values [][]float64
 }
 
-// CreateMatrix creates an empty 2D Matrix that is xDim, yDim
+// CreateMatrix creates an empty 2D Matrix that is rowHeight x columnWidth
 func CreateMatrix(rowHeight int, columnWidth int) Matrix {
 	matVals := make([][]float64, rowHeight)
 	for row := range matVals {
