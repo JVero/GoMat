@@ -9,13 +9,13 @@ func TestInit(t *testing.T) {
 }
 
 func TestAssign(t *testing.T) {
-	_ = InitMatrix(3, 3, []float64{1, 2, 3},
+	_ = New(3, 3, []float64{1, 2, 3},
 		[]float64{4, 5, 6},
 		[]float64{7, 8, 9})
 }
 
 func TestAdd(t *testing.T) {
-	a := InitMatrix(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	a := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6},
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -25,7 +25,7 @@ func TestAdd(t *testing.T) {
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
 
-	b := InitMatrix(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	b := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6},
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -38,19 +38,19 @@ func TestAdd(t *testing.T) {
 }
 
 func TestSub(t *testing.T) {
-	a := InitMatrix(3, 3, []float64{1, 2, 3},
+	a := New(3, 3, []float64{1, 2, 3},
 		[]float64{4, 5, 6},
 		[]float64{7, 8, 9})
-	b := InitMatrix(3, 3, []float64{1, 2, 3},
+	b := New(3, 3, []float64{1, 2, 3},
 		[]float64{4, 5, 6},
 		[]float64{7, 8, 9})
 	_ = a.Sub(b)
 }
 
 func TestMultsameDims(t *testing.T) {
-	a := InitMatrix(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9}, []float64{4, 5, 6, 7, 8, 9, 1, 2, 3}, []float64{7, 8, 9, 1, 2, 3, 4, 5, 6}, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9}, []float64{4, 5, 6, 7, 8, 9, 1, 2, 3}, []float64{7, 8, 9, 1, 2, 3, 4, 5, 6}, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9}, []float64{4, 5, 6, 7, 8, 9, 1, 2, 3}, []float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
+	a := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9}, []float64{4, 5, 6, 7, 8, 9, 1, 2, 3}, []float64{7, 8, 9, 1, 2, 3, 4, 5, 6}, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9}, []float64{4, 5, 6, 7, 8, 9, 1, 2, 3}, []float64{7, 8, 9, 1, 2, 3, 4, 5, 6}, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9}, []float64{4, 5, 6, 7, 8, 9, 1, 2, 3}, []float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
 
-	b := InitMatrix(9, 9,
+	b := New(9, 9,
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6},
@@ -64,7 +64,7 @@ func TestMultsameDims(t *testing.T) {
 }
 
 func TestMultDiffDims(t *testing.T) {
-	a := InitMatrix(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	a := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6},
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -73,7 +73,7 @@ func TestMultDiffDims(t *testing.T) {
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
-	b := InitMatrix(9, 5, []float64{1, 2, 3, 4, 5},
+	b := New(9, 5, []float64{1, 2, 3, 4, 5},
 		[]float64{4, 5, 6, 7, 8},
 		[]float64{7, 8, 9, 1, 2},
 		[]float64{1, 2, 3, 4, 5},
@@ -86,7 +86,7 @@ func TestMultDiffDims(t *testing.T) {
 }
 
 func TestGetValue(t *testing.T) {
-	a := InitMatrix(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	a := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6},
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},

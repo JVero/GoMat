@@ -25,15 +25,15 @@ func (m *Matrix) assignValue(row int, column int, val float64) {
 	m.values[row][column] = val
 }
 
-// InitMatrix is the basic initializer that takes an arbitrary amount of int slices as rows
+// New is the basic initializer that takes an arbitrary amount of int slices as rows
 // and returns the Matrix datatype
-func InitMatrix(numRows int, numCols int, rows ...[]float64) Matrix {
+func New(numRows int, numCols int, rows ...[]float64) Matrix {
 	if numRows != len(rows) {
-		return Matrix{}
+        panic("Matrix: The dimensions of the rows must match numRows")
 	}
 	for rowInd := range rows {
 		if len(rows[rowInd]) != numCols {
-			return Matrix{}
+            panic("Matrix: The length of all the columns must match numCols")
 		}
 	}
 	retMat := CreateMatrix(numRows, numCols)
@@ -95,7 +95,7 @@ func (m Matrix) Add(n Matrix) Matrix {
 }
 
 // GetDims is a trivial function that returns the width and the height of the matrix
-func (m Matrix) GetDims() (int, int) {
+func (m Matrix) Dimensions() (int, int) {
 	return m.width, m.height
 }
 

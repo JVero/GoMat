@@ -6,16 +6,16 @@ import (
 )
 
 func TestCSVParse(t *testing.T) {
-	_ = LoadMat("sampledata.csv")
+	_ = LoadCSV("sampledata.csv")
 }
 
 func TestCSVToStrings(t *testing.T) {
-    a := LoadMat("sampledata.csv")
+    a := LoadCSV("sampledata.csv")
     _ = dataToStrings(a)
 }
 
 func TestSaveMatrix(t *testing.T) {
-    a := LoadMat("sampledata.csv")
+    a := LoadCSV("sampledata.csv")
     b := MatrixToCSV(a, "outputfile.csv")
     fmt.Printf("%v", b)
 }

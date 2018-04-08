@@ -1,4 +1,4 @@
-package matrix
+package matrix 
 
 // The purpose of this file is to facilitate io functions, such as loading or saving matrices
 import (
@@ -9,7 +9,9 @@ import (
 	"strings"
 )
 
-func LoadMat(filename string) Matrix {
+// LoadCSV takes a file called filename and
+// loads it as a matrix, returning that matrix
+func LoadCSV(filename string) Matrix {
 	iobuf, err := os.Open(filename)
 	if err != nil {
 		panic(err)
@@ -24,7 +26,7 @@ func LoadMat(filename string) Matrix {
 	floats := csvToData(strings)
 	numRows := len(floats)
 	numCols := len(floats[0])
-	return InitMatrix(numRows, numCols, floats...)
+	return New(numRows, numCols, floats...)
 }
 
 func csvToData(data [][]string) [][]float64 {
@@ -48,7 +50,7 @@ func csvToData(data [][]string) [][]float64 {
 
 
 func dataToStrings(mat Matrix) [][]string{
-    numRows, numCols := mat.GetDims()
+    numRows, numCols := mat.Dimensions()
     retVal := make([][]string, numRows)
     for row_ind, row := range(mat.values) {
         retVal[row_ind] = make([]string, numCols)
@@ -59,6 +61,7 @@ func dataToStrings(mat Matrix) [][]string{
     return retVal
 }
 
+// MatrixToCSV saves the matrix as a .csv file
 func MatrixToCSV(mat Matrix, fileName string) error {
     strings := dataToStrings(mat)
 
