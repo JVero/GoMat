@@ -1,0 +1,15 @@
+language: go
+
+sudo: false
+
+go:
+    - 1.x
+    - 1.9
+    - 1.10
+
+install: true
+
+notifications:
+    email: true
+
+    
