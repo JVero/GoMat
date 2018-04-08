@@ -1,5 +1,8 @@
-IO capabilities
+IO capabilities using non-csv encodings
     loading
     saving
 
-
+Nonbasic functionality
+    Transpose
+    Invert
+    Eigenvalues / Eigenvectors
