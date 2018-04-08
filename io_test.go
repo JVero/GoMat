@@ -11,6 +11,11 @@ func TestCSVParse(t *testing.T) {
 
 func TestCSVToStrings(t *testing.T) {
     a := LoadMat("sampledata.csv")
-    b := dataToStrings(a)
+    _ = dataToStrings(a)
+}
+
+func TestSaveMatrix(t *testing.T) {
+    a := LoadMat("sampledata.csv")
+    b := MatrixToCSV(a, "outputfile.csv")
     fmt.Printf("%v", b)
 }

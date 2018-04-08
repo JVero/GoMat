@@ -58,3 +58,25 @@ func dataToStrings(mat Matrix) [][]string{
     }
     return retVal
 }
+
+func MatrixToCSV(mat Matrix, fileName string) error {
+    strings := dataToStrings(mat)
+
+    file, err := os.Create(fileName)
+    if err != nil {
+        return err
+    }
+
+    fileWriter := csv.NewWriter(file)
+    stdoutwriter := csv.NewWriter(os.Stdout)
+    err = fileWriter.WriteAll(strings)
+    err = stdoutwriter.WriteAll(strings)
+    if err != nil {
+        fmt.Println(err.Error())
+        return err
+    }
+
+    return nil
+}
+
+
