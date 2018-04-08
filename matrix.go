@@ -5,34 +5,34 @@ import (
 	"strconv"
 )
 
-type matrix struct {
+type Matrix struct {
 	width  int
 	height int
 	values [][]float64
 }
 
-// CreateMatrix creates an empty 2D matrix that is xDim, yDim
-func CreateMatrix(rowHeight int, columnWidth int) matrix {
+// CreateMatrix creates an empty 2D Matrix that is xDim, yDim
+func CreateMatrix(rowHeight int, columnWidth int) Matrix {
 	matVals := make([][]float64, rowHeight)
 	for row := range matVals {
 		matVals[row] = make([]float64, columnWidth)
 	}
-	return matrix{rowHeight, columnWidth, matVals}
+	return Matrix{rowHeight, columnWidth, matVals}
 }
 
-func (m *matrix) assignValue(row int, column int, val float64) {
+func (m *Matrix) assignValue(row int, column int, val float64) {
 	m.values[row][column] = val
 }
 
 // InitMatrix is the basic initializer that takes an arbitrary amount of int slices as rows
-// and returns the matrix datatype
-func InitMatrix(numRows int, numCols int, rows ...[]float64) matrix {
+// and returns the Matrix datatype
+func InitMatrix(numRows int, numCols int, rows ...[]float64) Matrix {
 	if numRows != len(rows) {
-		return matrix{}
+		return Matrix{}
 	}
-	for row_ind := range rows {
-		if len(rows[row_ind]) != numCols {
-			return matrix{}
+	for rowInd := range rows {
+		if len(rows[rowInd]) != numCols {
+			return Matrix{}
 		}
 	}
 	retMat := CreateMatrix(numRows, numCols)
@@ -44,7 +44,8 @@ func InitMatrix(numRows int, numCols int, rows ...[]float64) matrix {
 	return retMat
 }
 
-func IdentityMatrix(size int) matrix {
+//Eye creates a size x size identity Matrix
+func Eye(size int) Matrix {
 	returnMatrix := CreateMatrix(size, size)
 	for i := 0; i < size; i++ {
 		returnMatrix.assignValue(i, i, 1)
@@ -52,7 +53,7 @@ func IdentityMatrix(size int) matrix {
 	return returnMatrix
 }
 
-func (m matrix) String() string {
+func (m Matrix) String() string {
 	var retString bytes.Buffer
 	for i := range m.values {
 		if i == 0 {
@@ -74,9 +75,9 @@ func (m matrix) String() string {
 	return retString.String()
 }
 
-func (m matrix) add(n matrix) matrix {
+func (m Matrix) add(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
-		return matrix{}
+		return Matrix{}
 	}
 	retMat := CreateMatrix(m.width, m.height)
 	for i := range m.values {
@@ -88,12 +89,12 @@ func (m matrix) add(n matrix) matrix {
 
 }
 
-func (m matrix) GetDims() (int, int) {
+func (m Matrix) GetDims() (int, int) {
 	return m.width, m.height
 }
-func (m matrix) sub(n matrix) matrix {
+func (m Matrix) sub(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
-		return matrix{}
+		return Matrix{}
 	}
 	retMat := CreateMatrix(m.width, m.height)
 	for i := range m.values {
@@ -104,12 +105,12 @@ func (m matrix) sub(n matrix) matrix {
 	return retMat
 }
 
-func (m matrix) multiply(n matrix) matrix {
-	var retMat matrix
+func (m Matrix) multiply(n Matrix) Matrix {
+	var retMat Matrix
 	if len(m.values) == len(n.values[0]) { // C1 == R2 {
 		retMat = CreateMatrix(len(m.values), len(n.values[0]))
 	} else {
-		return matrix{}
+		return Matrix{}
 	}
 	for i := range m.values {
 		for j := range n.values[0] {

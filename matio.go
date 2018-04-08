@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func LoadMat(filename string) matrix {
+func LoadMat(filename string) Matrix {
 	iobuf, err := os.Open(filename)
 	if err != nil {
 		panic(err)
