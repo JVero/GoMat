@@ -66,6 +66,12 @@ func TestMultsameDims(t *testing.T) {
 	_ = a.multiply(b)
 }
 
+func TestBigMults(t *testing.T) {
+	testMat := LoadCSV("bigdata.csv")
+	prod := testMat.multiply(testMat)
+	fmt.Printf("%v", prod.At(0,0))
+}
+
 func TestMultDiffDims(t *testing.T) {
 	a := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},

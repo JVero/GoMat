@@ -124,11 +124,13 @@ func (m Matrix) multiply(n Matrix) Matrix {
 		return Matrix{}
 	}
 	for i := range m.values {
-		for j := range n.values[0] {
-			for k := range m.values[0] {
-				retMat.values[i][j] += m.values[i][k] * n.values[k][j]
+		go func(ig int) {
+			for j := range n.values[0] {
+				for k := range m.values[0] {
+					retMat.values[ig][j] += m.values[ig][k] * n.values[k][j]
+				}
 			}
-		}
+		}(i)
 	}
 	return retMat
 }
