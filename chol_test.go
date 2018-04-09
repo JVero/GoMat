@@ -17,5 +17,5 @@ func TestIsSymmetric(t *testing.T) {
 func TestChol(t *testing.T) {
 	mat := LoadCSV("choltest.csv")
 	fmt.Printf("%v", mat)
-	fmt.Printf("%v", cholesky(mat))
+	fmt.Printf("%v", Cholesky(mat))
 }
