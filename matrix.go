@@ -3,6 +3,7 @@ package matrix
 import (
 	"bytes"
 	"strconv"
+	"sync"
 )
 
 // Matrix is the default 2D data type that represents a matrix
@@ -130,4 +131,37 @@ func (m Matrix) multiply(n Matrix) Matrix {
 		}
 	}
 	return retMat
+}
+
+// Det is the determinant
+func (m Matrix) Det() (det float64) {
+	var wg sync.WaitGroup
+	det = 1
+	for i := range m.values {
+		pivotRow := i
+		for m.At(i, i) == 0 && pivotRow < m.height {
+			m.pivot(i, pivotRow)
+			pivotRow++
+		}
+
+		if m.At(i, i) == 0 {
+			return 0
+		}
+		for j := range m.values {
+			if i == j {
+				continue
+			}
+			wg.Add(1)
+			go func(jg, ig int) {
+				defer wg.Done()
+				scale := -1 * m.At(jg, ig) / m.At(ig, ig)
+				m.addScaledRow(jg, ig, scale)
+			}(j, i)
+		}
+
+	}
+	for i := range m.values {
+		det *= m.At(i, i)
+	}
+	return det
 }

@@ -105,3 +105,9 @@ func TestEye(t *testing.T) {
 	a := Eye(5)
 	fmt.Printf("%v", a)
 }
+
+func TestDet(t *testing.T) {
+	a := Eye(5)
+	a.scaleRow(2, 1)
+	fmt.Printf("%v\n", a.Det())
+}
