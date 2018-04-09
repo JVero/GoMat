@@ -13,8 +13,8 @@ type Matrix struct {
 	values [][]float64
 }
 
-// CreateMatrix creates an empty 2D Matrix that is rowHeight x columnWidth
-func CreateMatrix(rowHeight int, columnWidth int) Matrix {
+// Empty creates an empty 2D Matrix that is rowHeight x columnWidth
+func Empty(rowHeight int, columnWidth int) Matrix {
 	matVals := make([][]float64, rowHeight)
 	for row := range matVals {
 		matVals[row] = make([]float64, columnWidth)
@@ -37,7 +37,7 @@ func New(numRows int, numCols int, rows ...[]float64) Matrix {
 			panic("Matrix: The length of all the columns must match numCols")
 		}
 	}
-	retMat := CreateMatrix(numRows, numCols)
+	retMat := Empty(numRows, numCols)
 	for xval, row := range rows {
 		for yval, matval := range row {
 			retMat.assignValue(xval, yval, matval)
@@ -48,11 +48,27 @@ func New(numRows int, numCols int, rows ...[]float64) Matrix {
 
 //Eye creates a size x size identity Matrix
 func Eye(size int) Matrix {
-	returnMatrix := CreateMatrix(size, size)
+	returnMatrix := Empty(size, size)
 	for i := 0; i < size; i++ {
 		returnMatrix.assignValue(i, i, 1)
 	}
 	return returnMatrix
+}
+
+// T is transpose
+func (m Matrix) T() Matrix {
+	numRows := m.height
+	numCols := m.width
+	retMatData := make([][]float64, numRows)
+	for i := range retMatData {
+		retMatData[i] = make([]float64, numCols)
+		for j := range retMatData[i] {
+			println(i, j)
+			_ = m.values[j][i]
+			retMatData[i][j] = m.values[j][i]
+		}
+	}
+	return New(numRows, numCols, retMatData...)
 }
 
 // At returns the value at row, col
@@ -87,7 +103,7 @@ func (m Matrix) Add(n Matrix) Matrix {
 		panic("Matrix: Dimensions must match")
 	}
 
-	retMat := CreateMatrix(m.width, m.height)
+	retMat := Empty(m.width, m.height)
 	for i := range m.values {
 		for j := range m.values[i] {
 			retMat.values[i][j] = m.values[i][j] + n.values[i][j]
@@ -107,7 +123,7 @@ func (m Matrix) Sub(n Matrix) Matrix {
 	if m.width != n.width || m.height != n.height {
 		panic("Matrix:  Dimensions must match")
 	}
-	retMat := CreateMatrix(m.width, m.height)
+	retMat := Empty(m.width, m.height)
 	for i := range m.values {
 		for j := range m.values[i] {
 			retMat.values[i][j] = m.values[i][j] - n.values[i][j]
@@ -119,7 +135,7 @@ func (m Matrix) Sub(n Matrix) Matrix {
 func (m Matrix) multiply(n Matrix) Matrix {
 	var retMat Matrix
 	if len(m.values) == len(n.values[0]) { // C1 == R2 {
-		retMat = CreateMatrix(len(m.values), len(n.values[0]))
+		retMat = Empty(len(m.values), len(n.values[0]))
 	} else {
 		return Matrix{}
 	}

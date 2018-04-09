@@ -8,7 +8,7 @@ import (
 var testValue interface{}
 
 func TestInit(t *testing.T) {
-	_ = CreateMatrix(3, 3)
+	_ = Empty(3, 3)
 }
 
 func TestAssign(t *testing.T) {
@@ -110,4 +110,9 @@ func TestDet(t *testing.T) {
 	a := Eye(5)
 	a.scaleRow(2, 1)
 	fmt.Printf("%v\n", a.Det())
+}
+
+func TestTranspose(t *testing.T) {
+	mat := LoadCSV("sampledata.csv")
+	fmt.Printf("%v", mat.T())
 }
