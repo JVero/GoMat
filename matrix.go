@@ -118,13 +118,16 @@ func (m Matrix) Sub(n Matrix) Matrix {
 
 func (m Matrix) multiply(n Matrix) Matrix {
 	var retMat Matrix
+	var wg sync.WaitGroup
 	if len(m.values) == len(n.values[0]) { // C1 == R2 {
 		retMat = CreateMatrix(len(m.values), len(n.values[0]))
 	} else {
 		return Matrix{}
 	}
 	for i := range m.values {
+		wg.Add(1)
 		go func(ig int) {
+			defer wg.Done()
 			for j := range n.values[0] {
 				for k := range m.values[0] {
 					retMat.values[ig][j] += m.values[ig][k] * n.values[k][j]
@@ -132,6 +135,7 @@ func (m Matrix) multiply(n Matrix) Matrix {
 			}
 		}(i)
 	}
+	wg.Wait()
 	return retMat
 }
 
