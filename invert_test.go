@@ -29,8 +29,9 @@ func TestAugmented(t *testing.T) {
 }
 
 func TestInvert(t *testing.T) {
-	testMat := LoadCSV("inv.csv")
-	fmt.Printf("%v", testMat)
+	testMat := LoadCSV("bigdata.csv")
 	inv := testMat.invert()
-	fmt.Println(testMat.multiply(inv))
+	//a = testMat.multiply(inv)
+	ToCSV(inv, "biginverse.csv")
+	fmt.Println(inv)
 }

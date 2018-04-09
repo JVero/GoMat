@@ -1,6 +1,6 @@
 package matrix
 
-import "fmt"
+import "sync"
 
 func (m *Matrix) scaleRow(scale float64, row int) {
 	if row >= m.height {
@@ -51,13 +51,14 @@ func makeAugmentedMatrix(m Matrix) Matrix {
 
 func (m Matrix) invert() Matrix {
 	aug := makeAugmentedMatrix(m)
+	var wg sync.WaitGroup
 	for i := range aug.values {
 		pivotRow := i
 		for aug.At(i, i) == 0 && pivotRow < m.height {
 			aug.pivot(i, pivotRow)
 			pivotRow++
-			fmt.Printf("%v", aug)
 		}
+
 		if aug.At(i, i) == 0 {
 			panic("Matrix: Singular Matrix")
 		}
@@ -65,17 +66,23 @@ func (m Matrix) invert() Matrix {
 			if i == j {
 				continue
 			}
-			scale := -1 * aug.At(j, i) / aug.At(i, i)
-			fmt.Printf("Scale is %f\n for %f and %f\n", scale, aug.At(j, i), aug.At(i, i))
-			aug.addScaledRow(j, i, scale)
-			fmt.Printf("%v", aug)
+			wg.Add(1)
+			go func(jg, ig int) {
+				defer wg.Done()
+				scale := -1 * aug.At(jg, ig) / aug.At(ig, ig)
+				aug.addScaledRow(jg, ig, scale)
+			}(j, i)
 		}
+		wg.Wait()
 		for k := range aug.values {
-			scale := aug.At(k, k)
-			aug.scaleRow(1/scale, k)
-			fmt.Printf("%v", aug)
+			wg.Add(1)
+			go func(kg int) {
+				defer wg.Done()
+				scale := aug.At(kg, kg)
+				aug.scaleRow(1/scale, kg)
+			}(k)
 		}
-
+		wg.Wait()
 	}
 	return extractFromAugment(aug)
 }
@@ -85,7 +92,7 @@ func extractFromAugment(m Matrix) Matrix {
 	//numCols := m.width
 	for i := range retVal {
 		retVal[i] = m.values[i][m.height/2:]
-		fmt.Println(retVal[i])
 	}
 	return New(m.height/2, m.width, retVal...)
+
 }
