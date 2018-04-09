@@ -67,7 +67,7 @@ func (m Matrix) String() string {
 			retString.WriteString("  ")
 		}
 		for j := range m.values[i] {
-			retString.WriteString(strconv.FormatFloat(m.values[i][j], 'E', -1, 64))
+			retString.WriteString(strconv.FormatFloat(m.values[i][j], 'f', 2, 64))
 			if j != len(m.values[i])-1 {
 				retString.WriteString(", ")
 			}
