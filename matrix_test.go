@@ -73,9 +73,10 @@ func TestMultsameDims(t *testing.T) {
 }
 
 func TestBigMults(t *testing.T) {
-	testMat := LoadCSV("bigdata.csv")
+	testMat := LoadCSV("bigishdata.csv")
 	prod := testMat.multiply(testMat)
 	fmt.Printf("%v", prod.At(0, 0))
+	ToCSV(prod, "bigMult.csv")
 }
 
 func TestMultDiffDims(t *testing.T) {
@@ -127,4 +128,37 @@ func TestDet(t *testing.T) {
 func TestTranspose(t *testing.T) {
 	mat := LoadCSV("sampledata.csv")
 	fmt.Printf("%v", mat.T())
+}
+
+func BenchmarkBigMatMul(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		testMat := LoadCSV("bigdata.csv")
+		_ = testMat.multiply(testMat)
+	}
+}
+
+func TestPad(t *testing.T) {
+	testMat := LoadCSV("sampledata1.csv")
+	fmt.Printf("%v", testMat)
+	fmt.Printf("%v", Pad(testMat))
+}
+
+func TestPartition(t *testing.T) {
+	testMat := LoadCSV("sampledata1.csv")
+	fmt.Printf("%v\n", testMat)
+	padded := Pad(testMat)
+	a1, a2, a3, a4 := Partition(padded)
+	fmt.Printf("%v\n%v\n%v\n%v\n", a1, a2, a3, a4)
+}
+
+func TestStrassen(t *testing.T) {
+	bigMat := LoadCSV("bigishdata.csv")
+	newFile := bigMat.Strassen(bigMat)
+	ToCSV(newFile, "bigStrassen.csv")
+}
+
+func TestRound(t *testing.T) {
+	var a float64
+	a = 0.6
+	println(int(a))
 }
