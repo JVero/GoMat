@@ -63,7 +63,6 @@ func (m Matrix) T() Matrix {
 	for i := range retMatData {
 		retMatData[i] = make([]float64, numCols)
 		for j := range retMatData[i] {
-			println(i, j)
 			_ = m.values[j][i]
 			retMatData[i][j] = m.values[j][i]
 		}
