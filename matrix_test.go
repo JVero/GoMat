@@ -157,19 +157,10 @@ func TestCompose(t *testing.T) {
 	padded := Pad(testMat)
 	a1, a2, a3, a4 := Partition(padded)
 	fmt.Printf("%v\n%v\n%v\n%v\n", a1, a2, a3, a4)
-	fmt.Printf("%v", Compose(a1, a2, a3, a4, 5, 5))
 }
 
 func TestStrassen(t *testing.T) {
 	bigMat := LoadCSV("bigdata.csv")
 	newFile := bigMat.Strassen(bigMat)
 	ToCSV(newFile, "bigStrassen.csv")
-}
-
-func TestSlice(t *testing.T) {
-	a := make([]float64, 8)
-
-	for i := range a {
-		println(a[-i])
-	}
 }
