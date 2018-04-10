@@ -151,14 +151,25 @@ func TestPartition(t *testing.T) {
 	fmt.Printf("%v\n%v\n%v\n%v\n", a1, a2, a3, a4)
 }
 
+func TestCompose(t *testing.T) {
+	testMat := LoadCSV("sampledata1.csv")
+	fmt.Printf("%v\n", testMat)
+	padded := Pad(testMat)
+	a1, a2, a3, a4 := Partition(padded)
+	fmt.Printf("%v\n%v\n%v\n%v\n", a1, a2, a3, a4)
+	fmt.Printf("%v", Compose(a1, a2, a3, a4, 5, 5))
+}
+
 func TestStrassen(t *testing.T) {
-	bigMat := LoadCSV("bigishdata.csv")
+	bigMat := LoadCSV("bigdata.csv")
 	newFile := bigMat.Strassen(bigMat)
 	ToCSV(newFile, "bigStrassen.csv")
 }
 
-func TestRound(t *testing.T) {
-	var a float64
-	a = 0.6
-	println(int(a))
+func TestSlice(t *testing.T) {
+	a := make([]float64, 8)
+
+	for i := range a {
+		println(a[-i])
+	}
 }
