@@ -52,8 +52,7 @@ func TestSub(t *testing.T) {
 
 func TestBigAdd(t *testing.T) {
 	testMat := LoadCSV("bigdata.csv")
-	prod := testMat.Add(testMat)
-	fmt.Printf("%v", prod.At(0, 0))
+	_ = testMat.Add(testMat)
 }
 
 func TestMultsameDims(t *testing.T) {
@@ -75,7 +74,6 @@ func TestMultsameDims(t *testing.T) {
 func TestBigMults(t *testing.T) {
 	testMat := LoadCSV("bigishdata.csv")
 	prod := testMat.multiply(testMat)
-	fmt.Printf("%v", prod.At(0, 0))
 	ToCSV(prod, "bigMult.csv")
 }
 
@@ -114,20 +112,15 @@ func TestGetValue(t *testing.T) {
 	fmt.Printf("%v\n", a.At(1, 1))
 }
 
-func TestEye(t *testing.T) {
-	a := Eye(5)
-	fmt.Printf("%v", a)
-}
-
 func TestDet(t *testing.T) {
 	a := Eye(5)
 	a.scaleRow(2, 1)
-	fmt.Printf("%v\n", a.Det())
+	fmt.Printf("Determinant test: the determinant is %v\n", a.Det())
 }
 
 func TestTranspose(t *testing.T) {
 	mat := LoadCSV("sampledata.csv")
-	fmt.Printf("%v", mat.T())
+	_ = mat.T()
 }
 
 func BenchmarkBigMatMul(b *testing.B) {
@@ -139,24 +132,19 @@ func BenchmarkBigMatMul(b *testing.B) {
 
 func TestPad(t *testing.T) {
 	testMat := LoadCSV("sampledata1.csv")
-	fmt.Printf("%v", testMat)
-	fmt.Printf("%v", Pad(testMat))
+	_ = Pad(testMat)
 }
 
 func TestPartition(t *testing.T) {
 	testMat := LoadCSV("sampledata1.csv")
-	fmt.Printf("%v\n", testMat)
 	padded := Pad(testMat)
-	a1, a2, a3, a4 := Partition(padded)
-	fmt.Printf("%v\n%v\n%v\n%v\n", a1, a2, a3, a4)
+	_, _, _, _ = Partition(padded)
 }
 
 func TestCompose(t *testing.T) {
 	testMat := LoadCSV("sampledata1.csv")
-	fmt.Printf("%v\n", testMat)
 	padded := Pad(testMat)
-	a1, a2, a3, a4 := Partition(padded)
-	fmt.Printf("%v\n%v\n%v\n%v\n", a1, a2, a3, a4)
+	_, _, _, _ = Partition(padded)
 }
 
 func TestStrassen(t *testing.T) {
