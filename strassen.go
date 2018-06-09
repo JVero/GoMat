@@ -6,14 +6,14 @@ import (
 )
 
 func Pad(m Matrix) Matrix {
-	newDim := int(math.Pow(2, float64(int(math.Log2(float64(m.width-1))+1))))
+	newDim := int(math.Pow(2, float64(int(math.Log2(float64(m.numCols-1))+1))))
 	retMat := Empty(newDim, newDim)
-	for i := range retMat.values {
-		for j := range retMat.values {
-			if i < m.width && j < m.width {
-				retMat.values[i][j] = m.values[i][j]
+	for i := 0; i < retMat.numRows; i++{
+		for j := 0; j <  retMat.numCols; j++{
+			if i < m.numCols && j < m.numCols {
+				retMat.assignValue(i, j, m.Get(i, j))
 			} else {
-				retMat.values[i][j] = 0
+				retMat.assignValue(i, j, 0)
 			}
 		}
 	}
@@ -23,24 +23,24 @@ func Pad(m Matrix) Matrix {
 
 // Partition breaks up a padded matrix into four
 func Partition(m Matrix) (a1, a2, a3, a4 Matrix) {
-	if m.width > 1030 {
+	if m.numCols > 1030 {
 		panic("too big")
 	}
-	a1 = Empty(m.width/2, m.width/2)
-	a2 = Empty(m.width/2, m.width/2)
-	a3 = Empty(m.width/2, m.width/2)
-	a4 = Empty(m.width/2, m.width/2)
-	for ig := range m.values {
+	a1 = Empty(m.numCols/2, m.numCols/2)
+	a2 = Empty(m.numCols/2, m.numCols/2)
+	a3 = Empty(m.numCols/2, m.numCols/2)
+	a4 = Empty(m.numCols/2, m.numCols/2)
+	for ig := 0; ig < m.numRows; ig++{
 		go func(i int) {
-			for j := range m.values[i] {
-				if i < m.height/2 && j < m.width/2 {
-					a1.values[i][j] = m.At(i, j)
-				} else if i < m.height/2 && j >= m.width/2 {
-					a2.values[i][j-m.width/2] = m.At(i, j)
-				} else if i >= m.height/2 && j < m.width/2 {
-					a3.values[i-m.height/2][j] = m.At(i, j)
-				} else if i >= m.height/2 && j >= m.width/2 {
-					a4.values[i-m.height/2][j-m.width/2] = m.At(i, j)
+			for j := 0; j < m.numCols; j++ {
+				if i < m.numRows/2 && j < m.numCols/2 {
+					a1.assignValue(i, j, m.Get(i, j))
+				} else if i < m.numRows/2 && j >= m.numCols/2 {
+					a2.assignValue(i, j-m.numCols/2, m.Get(i, j))
+				} else if i >= m.numRows/2 && j < m.numCols/2 {
+					a3.assignValue(i-m.numRows/2, j, m.Get(i, j))
+				} else if i >= m.numRows/2 && j >= m.numCols/2 {
+					a4.assignValue(i-m.numRows/2, j-m.numCols/2, m.Get(i, j))
 				}
 			}
 		}(ig)
@@ -49,7 +49,7 @@ func Partition(m Matrix) (a1, a2, a3, a4 Matrix) {
 }
 
 func (m1 Matrix) Strassen(m2 Matrix) Matrix {
-	if m1.height <= 256 {
+	if m1.numRows <= 256 {
 		return m1.multiply(m2)
 	}
 	var wg sync.WaitGroup
@@ -92,28 +92,28 @@ func (m1 Matrix) Strassen(m2 Matrix) Matrix {
 	c12 := M3.Add(M5)
 	c21 := M2.Add(M4)
 	c22 := M1.Sub(M2).Add(M3).Add(M6)
-	return Compose(c11, c12, c21, c22, m1.height, m2.width)
+	return Compose(c11, c12, c21, c22, m1.numRows, m2.numCols)
 }
 
 func Compose(c1, c2, c3, c4 Matrix, originalHeight, originalWidth int) Matrix {
 	m := Empty(originalHeight, originalHeight)
 	var wg sync.WaitGroup
-	for i := range m.values {
+	for i := 0; i < m.numRows; i++ {
 		wg.Add(1)
 		go func(ig int) {
 			defer wg.Done()
-			for j := range m.values[ig] {
-				if ig < c1.height && j < c1.width {
-					if ig >= len(c1.values) || j >= len(c1.values[0]) {
+			for j := 0; j < m.numCols; j++ {
+				if ig < c1.numRows && j < c1.numCols {
+					if ig >= c1.numRows || j >= c1.numCols {
 						panic("ahhhh")
 					}
-					m.values[ig][j] = c1.values[ig][j]
-				} else if ig < c1.height && j >= c1.width {
-					m.values[ig][j] = c2.values[ig][j-c1.width]
-				} else if ig >= c1.height && j < c1.width {
-					m.values[ig][j] = c3.values[ig-c1.height][j]
-				} else if ig >= c1.height && j >= c1.width {
-					m.values[ig][j] = c4.values[ig-c1.height][j-c1.width]
+					m.assignValue(ig ,j, c1.Get(ig, j))
+				} else if ig < c1.numRows && j >= c1.numCols {
+					m.assignValue(ig, j, c2.Get(ig, j-c1.numCols))
+				} else if ig >= c1.numRows && j < c1. numCols {
+					m.assignValue(ig, j, c3.Get(ig-c1.numRows, j))
+				} else if ig >= c1.numRows && j >= c1.numCols {
+					m.assignValue(ig, j, c4.Get(ig-c1.numRows, j-c1.numCols))
 				}
 			}
 		}(i)

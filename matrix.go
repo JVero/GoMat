@@ -8,22 +8,29 @@ import (
 
 // Matrix is the default 2D data type that represents a matrix
 type Matrix struct {
-	width  int
-	height int
-	values [][]float64
+	numRows int
+	numCols int
+	values  []float64
 }
 
 // Empty creates an empty 2D Matrix that is rowHeight x columnWidth
-func Empty(rowHeight int, columnWidth int) Matrix {
-	matVals := make([][]float64, rowHeight)
-	for row := range matVals {
-		matVals[row] = make([]float64, columnWidth)
+func Empty(numRows int, numCols int) Matrix {
+	matVals := make([]float64, numRows*numCols)
+	return Matrix{numRows, numCols, matVals}
+}
+
+func (m *Matrix) Get(row int, column int) float64 {
+	if row > m.numRows || column > m.numCols {
+		panic("Out of range")
 	}
-	return Matrix{rowHeight, columnWidth, matVals}
+	return m.values[m.numCols*row+column]
 }
 
 func (m *Matrix) assignValue(row int, column int, val float64) {
-	m.values[row][column] = val
+	if row > m.numRows || column > m.numCols {
+		panic("Out of range")
+	}
+	m.values[m.numCols*row+column] = val
 }
 
 // New is the basic initializer that takes an arbitrary amount of int slices as rows
@@ -38,9 +45,9 @@ func New(numRows int, numCols int, rows ...[]float64) Matrix {
 		}
 	}
 	retMat := Empty(numRows, numCols)
-	for xval, row := range rows {
-		for yval, matval := range row {
-			retMat.assignValue(xval, yval, matval)
+	for xval := 0; xval < retMat.numRows; xval++ {
+		for yval := 0; yval < retMat.numCols; yval++ {
+			retMat.assignValue(xval, yval, rows[xval][yval])
 		}
 	}
 	return retMat
@@ -57,38 +64,33 @@ func Eye(size int) Matrix {
 
 // T is transpose
 func (m Matrix) T() Matrix {
-	numRows := m.height
-	numCols := m.width
+	numRows := m.numCols
+	numCols := m.numRows
 	retMatData := make([][]float64, numRows)
 	for i := range retMatData {
 		retMatData[i] = make([]float64, numCols)
 		for j := range retMatData[i] {
-			_ = m.values[j][i]
-			retMatData[i][j] = m.values[j][i]
+			retMatData[i][j] = m.Get(j, i)
 		}
 	}
 	return New(numRows, numCols, retMatData...)
 }
 
-// At returns the value at row, col
-func (m Matrix) At(row, col int) float64 {
-	return (m.values[row][col])
-}
 func (m Matrix) String() string {
 	var retString bytes.Buffer
-	for i := range m.values {
+	for i := 0; i < m.numRows; i++ {
 		if i == 0 {
 			retString.WriteString("[ ")
 		} else {
 			retString.WriteString("  ")
 		}
-		for j := range m.values[i] {
-			retString.WriteString(strconv.FormatFloat(m.values[i][j], 'f', 2, 64))
-			if j != len(m.values[i])-1 {
+		for j := 0; j < m.numCols; j++ {
+			retString.WriteString(strconv.FormatFloat(m.Get(i, j), 'f', 2, 64))
+			if j != m.numCols-1 {
 				retString.WriteString(", ")
 			}
 		}
-		if i == len(m.values)-1 {
+		if i == m.numRows-1 {
 			retString.WriteString(" ]")
 		}
 		retString.WriteString("\n")
@@ -98,34 +100,36 @@ func (m Matrix) String() string {
 
 // Add m and n
 func (m Matrix) Add(n Matrix) Matrix {
-	if m.width != n.width || m.height != n.height {
+	if m.numCols != n.numCols || m.numRows != n.numRows {
 		panic("Matrix: Dimensions must match")
 	}
 
-	retMat := Empty(m.width, m.height)
-	for i := range m.values {
-		for j := range m.values[i] {
-			retMat.values[i][j] = m.values[i][j] + n.values[i][j]
+	retMat := Empty(m.numCols, m.numRows)
+	for i := 0; i < m.numRows; i++ {
+		for j := 0; j < m.numCols; j++ {
+			newVal := m.Get(i, j) + n.Get(i, j)
+			retMat.assignValue(i, j, newVal)
 		}
 	}
 	return retMat
 
 }
 
-// Dimensions is a trivial function that returns the width and the height of the matrix
+// Dimensions is a trivial function that returns the numCols and the numRows of the matrix
 func (m Matrix) Dimensions() (int, int) {
-	return m.width, m.height
+	return m.numRows, m.numCols
 }
 
 //Sub calculates m - n
 func (m Matrix) Sub(n Matrix) Matrix {
-	if m.width != n.width || m.height != n.height {
+	if m.numCols != n.numCols || m.numRows != n.numRows {
 		panic("Matrix:  Dimensions must match")
 	}
-	retMat := Empty(m.width, m.height)
-	for i := range m.values {
-		for j := range m.values[i] {
-			retMat.values[i][j] = m.values[i][j] - n.values[i][j]
+	retMat := Empty(m.numCols, m.numRows)
+	for i := 0; i < m.numRows; i++ {
+		for j := 0; j < m.numCols; j++ {
+			val := m.Get(i, j) - n.Get(i, j)
+			retMat.assignValue(i, j, val)
 		}
 	}
 	return retMat
@@ -134,18 +138,31 @@ func (m Matrix) Sub(n Matrix) Matrix {
 func (m Matrix) multiply(n Matrix) Matrix {
 	var retMat Matrix
 	var wg sync.WaitGroup
-	if len(m.values) == len(n.values[0]) { // C1 == R2 {
-		retMat = Empty(len(m.values), len(n.values[0]))
+	if m.numCols == n.numRows { // C1 == R2 {
+		retMat = Empty(m.numRows, n.numCols)
 	} else {
-		return Matrix{}
+		panic("Dimension mismatch")
 	}
-	for i := range m.values {
+	for i := 0; i < m.numRows; i++ {
 		wg.Add(1)
 		go func(ig int) {
 			defer wg.Done()
-			for j := range n.values[0] {
-				for k := range m.values[0] {
-					retMat.values[ig][j] += m.values[ig][k] * n.values[k][j]
+			for j := 0; j < n.numCols; j++ {
+				for k := 0; k < m.numCols; k++ {
+					if ig >= retMat.numRows || j >= retMat.numCols {
+						panic("first")
+					}
+					if ig >= m.numRows || k >= m.numCols {
+						panic("second")
+					}
+					if k >= n.numRows || j >= n.numCols {
+						panic("third")
+					}
+					val1 := retMat.Get(ig, j)
+					val2 := m.Get(ig, k)
+					val3 := n.Get(k, j)
+					val := val1 + val2*val3
+					retMat.assignValue(ig, j, val)
 				}
 			}
 		}(i)
@@ -158,31 +175,33 @@ func (m Matrix) multiply(n Matrix) Matrix {
 func (m Matrix) Det() (det float64) {
 	var wg sync.WaitGroup
 	det = 1
-	for i := range m.values {
+	for i := 0; i < m.numRows; i++ {
 		pivotRow := i
-		for m.At(i, i) == 0 && pivotRow < m.height {
+		for m.Get(i, i) == 0 && pivotRow < m.numRows {
 			m.pivot(i, pivotRow)
 			pivotRow++
 		}
 
-		if m.At(i, i) == 0 {
+		if m.Get(i, i) == 0 {
 			return 0
 		}
-		for j := range m.values {
+		for j := 0; j < m.numRows; j++ {
 			if i == j {
 				continue
 			}
 			wg.Add(1)
 			go func(jg, ig int) {
 				defer wg.Done()
-				scale := -1 * m.At(jg, ig) / m.At(ig, ig)
+				val1 := m.Get(jg, ig)
+				val2 := m.Get(ig, ig)
+				scale := -1 * val1 / val2
 				m.addScaledRow(jg, ig, scale)
 			}(j, i)
 		}
 
 	}
-	for i := range m.values {
-		det *= m.At(i, i)
+	for i := 0; i < m.numRows; i++ {
+		det *= m.Get(i, i)
 	}
 	return det
 }

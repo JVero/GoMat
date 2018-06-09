@@ -51,10 +51,11 @@ func csvToData(data [][]string) [][]float64 {
 func dataToStrings(mat Matrix) [][]string {
 	numRows, numCols := mat.Dimensions()
 	retVal := make([][]string, numRows)
-	for rowInd, row := range mat.values {
+	for rowInd := 0; rowInd < numRows; rowInd++ {
 		retVal[rowInd] = make([]string, numCols)
-		for colInd := range row {
-			retVal[rowInd][colInd] = strconv.FormatFloat(mat.At(rowInd, colInd), 'E', -1, 64)
+		for colInd := 0; colInd < mat.numCols; colInd++ {
+			val := mat.Get(rowInd, colInd)
+			retVal[rowInd][colInd] = strconv.FormatFloat(val, 'E', -1, 64)
 		}
 	}
 	return retVal

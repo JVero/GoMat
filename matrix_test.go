@@ -78,7 +78,8 @@ func TestBigMults(t *testing.T) {
 }
 
 func TestMultDiffDims(t *testing.T) {
-	a := New(9, 9, []float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
+	a := New(9, 9,
+		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6},
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
@@ -87,7 +88,8 @@ func TestMultDiffDims(t *testing.T) {
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
-	b := New(9, 5, []float64{1, 2, 3, 4, 5},
+	b := New(9, 5,
+		[]float64{1, 2, 3, 4, 5},
 		[]float64{4, 5, 6, 7, 8},
 		[]float64{7, 8, 9, 1, 2},
 		[]float64{1, 2, 3, 4, 5},
@@ -109,7 +111,7 @@ func TestGetValue(t *testing.T) {
 		[]float64{1, 2, 3, 4, 5, 6, 7, 8, 9},
 		[]float64{4, 5, 6, 7, 8, 9, 1, 2, 3},
 		[]float64{7, 8, 9, 1, 2, 3, 4, 5, 6})
-	fmt.Printf("%v\n", a.At(1, 1))
+	fmt.Printf("%v\n", a.Get(1, 1))
 }
 
 func TestDet(t *testing.T) {
