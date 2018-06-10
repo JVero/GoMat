@@ -74,7 +74,7 @@ func TestMultsameDims(t *testing.T) {
 func TestBigMults(t *testing.T) {
 	testMat := LoadCSV("bigishdata.csv")
 	prod := testMat.multiply(testMat)
-	ToCSV(prod, "bigMult.csv")
+	prod.ToCSV("bigMult.csv")
 }
 
 func TestMultDiffDims(t *testing.T) {
@@ -152,5 +152,5 @@ func TestCompose(t *testing.T) {
 func TestStrassen(t *testing.T) {
 	bigMat := LoadCSV("bigdata.csv")
 	newFile := bigMat.Strassen(bigMat)
-	ToCSV(newFile, "bigStrassen.csv")
+	newFile.ToCSV("bigStrassen.csv")
 }

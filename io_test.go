@@ -15,5 +15,10 @@ func TestCSVToStrings(t *testing.T) {
 
 func TestSaveMatrix(t *testing.T) {
 	a := LoadCSV("sampledata.csv")
-	ToCSV(a, "outputfile.csv")
+	a.ToCSV("outputfile.csv")
+}
+
+func TestCompression(t *testing.T) {
+	a := LoadCSV("bigdata.csv")
+	a.ToGZ("bigdata")
 }

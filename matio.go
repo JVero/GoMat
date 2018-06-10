@@ -7,6 +7,9 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"bufio"
+	"io/ioutil"
+	"compress/gzip"
 )
 
 // LoadCSV takes a file called filename and
@@ -62,10 +65,10 @@ func dataToStrings(mat Matrix) [][]string {
 }
 
 // ToCSV saves the matrix as a .csv file
-func ToCSV(mat Matrix, fileName string) error {
+func (mat Matrix) ToCSV(filename string) error {
 	strings := dataToStrings(mat)
 
-	file, err := os.Create(fileName)
+	file, err := os.Create(filename)
 	if err != nil {
 		return err
 	}
@@ -79,3 +82,25 @@ func ToCSV(mat Matrix, fileName string) error {
 
 	return nil
 }
+
+// ToGZ saves the matrix as a .csv.gz file
+// first the function saves as a csv file, then
+// compresses it with gzip
+func (mat Matrix) ToGZ(filename string) error {
+	_ = mat.ToCSV(filename + ".csv")
+	f,_ := os.Open(filename + ".csv")
+
+	reader := bufio.NewReader(f)
+	content, _ := ioutil.ReadAll(reader)
+
+	name := filename + ".csv" + ".gz"
+	f, err := os.Create(name)
+	if err != nil {
+		return err
+	}
+	w := gzip.NewWriter(f)
+	w.Write(content)
+	w.Close()
+	return nil
+}
+
