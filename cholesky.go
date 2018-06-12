@@ -21,13 +21,13 @@ func Cholesky(m Matrix) Matrix {
 				for k := 0; k < j; k++ {
 					sum += math.Pow(L.Get(j, k), 2)
 				}
-				L.assignValue(i, j, math.Sqrt(m.Get(j, j) - sum))
+				L.assignValue(i, j, math.Sqrt(m.Get(j, j)-sum))
 			} else {
 				sum := 0.0
 				for k := 0; k < j; k++ {
 					sum += L.Get(i, j) * L.Get(j, k)
 				}
-				L.assignValue(i, j, (1 / L.Get(j,j) * (m.Get(i, j) - sum)))
+				L.assignValue(i, j, (1 / L.Get(j, j) * (m.Get(i, j) - sum)))
 			}
 		}
 	}

@@ -6,7 +6,7 @@ import (
 )
 
 func TestCholesky(t *testing.T) {
-	mat := LoadCSV("choltest.csv")
+	mat := LoadCSV("data/choltest.csv")
 	_ = Cholesky(mat)
 }
 

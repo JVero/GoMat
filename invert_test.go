@@ -21,11 +21,11 @@ func TestAddScaledRow(t *testing.T) {
 func TestAugmented(t *testing.T) {
 	testMat := Eye(4)
 	aug := makeAugmentedMatrix(testMat)
-	aug.ToCSV("augtest.csv")
+	aug.ToCSV("data/augtest.csv")
 }
 
 func TestInvert(t *testing.T) {
-	testMat := LoadCSV("bigdata.csv")
+	testMat := LoadCSV("data/bigdata.csv")
 	inv := testMat.invert()
-	inv.ToCSV("biginverse.csv")
+	inv.ToCSV("data/biginverse.csv")
 }

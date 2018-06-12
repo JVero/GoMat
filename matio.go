@@ -2,14 +2,14 @@ package matrix
 
 // The purpose of this file is to facilitate io functions, such as loading or saving matrices
 import (
+	"bufio"
+	"compress/gzip"
 	"encoding/csv"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strconv"
 	"strings"
-	"bufio"
-	"io/ioutil"
-	"compress/gzip"
 )
 
 // LoadCSV takes a file called filename and
@@ -87,8 +87,8 @@ func (mat Matrix) ToCSV(filename string) error {
 // first the function saves as a csv file, then
 // compresses it with gzip
 func (mat Matrix) ToGZ(filename string) error {
-	_ = mat.ToCSV("tempfile.csv")
-	f,_ := os.Open("tempfile.csv")
+	_ = mat.ToCSV("data/tempfile.csv")
+	f, _ := os.Open("data/tempfile.csv")
 
 	reader := bufio.NewReader(f)
 	content, _ := ioutil.ReadAll(reader)
@@ -101,7 +101,6 @@ func (mat Matrix) ToGZ(filename string) error {
 	w := gzip.NewWriter(f)
 	w.Write(content)
 	w.Close()
-	os.Remove("tempfile.csv")
+	os.Remove("data/tempfile.csv")
 	return nil
 }
-

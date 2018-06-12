@@ -8,8 +8,8 @@ import (
 func Pad(m Matrix) Matrix {
 	newDim := int(math.Pow(2, float64(int(math.Log2(float64(m.numCols-1))+1))))
 	retMat := Empty(newDim, newDim)
-	for i := 0; i < retMat.numRows; i++{
-		for j := 0; j <  retMat.numCols; j++{
+	for i := 0; i < retMat.numRows; i++ {
+		for j := 0; j < retMat.numCols; j++ {
 			if i < m.numCols && j < m.numCols {
 				retMat.assignValue(i, j, m.Get(i, j))
 			} else {
@@ -30,7 +30,7 @@ func Partition(m Matrix) (a1, a2, a3, a4 Matrix) {
 	a2 = Empty(m.numCols/2, m.numCols/2)
 	a3 = Empty(m.numCols/2, m.numCols/2)
 	a4 = Empty(m.numCols/2, m.numCols/2)
-	for ig := 0; ig < m.numRows; ig++{
+	for ig := 0; ig < m.numRows; ig++ {
 		go func(i int) {
 			for j := 0; j < m.numCols; j++ {
 				if i < m.numRows/2 && j < m.numCols/2 {
@@ -107,10 +107,10 @@ func Compose(c1, c2, c3, c4 Matrix, originalHeight, originalWidth int) Matrix {
 					if ig >= c1.numRows || j >= c1.numCols {
 						panic("ahhhh")
 					}
-					m.assignValue(ig ,j, c1.Get(ig, j))
+					m.assignValue(ig, j, c1.Get(ig, j))
 				} else if ig < c1.numRows && j >= c1.numCols {
 					m.assignValue(ig, j, c2.Get(ig, j-c1.numCols))
-				} else if ig >= c1.numRows && j < c1. numCols {
+				} else if ig >= c1.numRows && j < c1.numCols {
 					m.assignValue(ig, j, c3.Get(ig-c1.numRows, j))
 				} else if ig >= c1.numRows && j >= c1.numCols {
 					m.assignValue(ig, j, c4.Get(ig-c1.numRows, j-c1.numCols))

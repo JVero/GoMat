@@ -51,7 +51,7 @@ func TestSub(t *testing.T) {
 }
 
 func TestBigAdd(t *testing.T) {
-	testMat := LoadCSV("bigdata.csv")
+	testMat := LoadCSV("data/bigdata.csv")
 	_ = testMat.Add(testMat)
 }
 
@@ -72,9 +72,9 @@ func TestMultsameDims(t *testing.T) {
 }
 
 func TestBigMults(t *testing.T) {
-	testMat := LoadCSV("bigishdata.csv")
+	testMat := LoadCSV("data/bigishdata.csv")
 	prod := testMat.multiply(testMat)
-	prod.ToCSV("bigMult.csv")
+	prod.ToCSV("data/bigMult.csv")
 }
 
 func TestMultDiffDims(t *testing.T) {
@@ -121,36 +121,36 @@ func TestDet(t *testing.T) {
 }
 
 func TestTranspose(t *testing.T) {
-	mat := LoadCSV("sampledata.csv")
+	mat := LoadCSV("data/sampledata.csv")
 	_ = mat.T()
 }
 
 func BenchmarkBigMatMul(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		testMat := LoadCSV("bigdata.csv")
+		testMat := LoadCSV("data/bigdata.csv")
 		_ = testMat.multiply(testMat)
 	}
 }
 
 func TestPad(t *testing.T) {
-	testMat := LoadCSV("sampledata1.csv")
+	testMat := LoadCSV("data/sampledata1.csv")
 	_ = Pad(testMat)
 }
 
 func TestPartition(t *testing.T) {
-	testMat := LoadCSV("sampledata1.csv")
+	testMat := LoadCSV("data/sampledata1.csv")
 	padded := Pad(testMat)
 	_, _, _, _ = Partition(padded)
 }
 
 func TestCompose(t *testing.T) {
-	testMat := LoadCSV("sampledata1.csv")
+	testMat := LoadCSV("data/sampledata1.csv")
 	padded := Pad(testMat)
 	_, _, _, _ = Partition(padded)
 }
 
 func TestStrassen(t *testing.T) {
-	bigMat := LoadCSV("bigdata.csv")
+	bigMat := LoadCSV("data/bigdata.csv")
 	newFile := bigMat.Strassen(bigMat)
-	newFile.ToCSV("bigStrassen.csv")
+	newFile.ToCSV("data/bigStrassen.csv")
 }

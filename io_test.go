@@ -5,21 +5,21 @@ import (
 )
 
 func TestCSVParse(t *testing.T) {
-	_ = LoadCSV("sampledata.csv")
+	_ = LoadCSV("data/sampledata.csv")
 }
 
 func TestCSVToStrings(t *testing.T) {
-	a := LoadCSV("sampledata.csv")
+	a := LoadCSV("data/sampledata.csv")
 	_ = dataToStrings(a)
 }
 
 func TestSaveMatrix(t *testing.T) {
-	a := LoadCSV("sampledata.csv")
-	a.ToCSV("outputfile.csv")
+	a := LoadCSV("data/sampledata.csv")
+	a.ToCSV("data/outputfile.csv")
 }
 
 func TestCompression(t *testing.T) {
-	a := LoadCSV("bigdata.csv")
-	a.ToGZ("bigdata")
-	a.ToCSV("bigdata.csv")
+	a := LoadCSV("data/bigdata.csv")
+	a.ToGZ("data/bigdata")
+	a.ToCSV("data/bigdata.csv")
 }
