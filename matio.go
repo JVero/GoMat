@@ -87,8 +87,8 @@ func (mat Matrix) ToCSV(filename string) error {
 // first the function saves as a csv file, then
 // compresses it with gzip
 func (mat Matrix) ToGZ(filename string) error {
-	_ = mat.ToCSV(filename + ".csv")
-	f,_ := os.Open(filename + ".csv")
+	_ = mat.ToCSV("tempfile.csv")
+	f,_ := os.Open("tempfile.csv")
 
 	reader := bufio.NewReader(f)
 	content, _ := ioutil.ReadAll(reader)
@@ -101,6 +101,7 @@ func (mat Matrix) ToGZ(filename string) error {
 	w := gzip.NewWriter(f)
 	w.Write(content)
 	w.Close()
+	os.Remove("tempfile.csv")
 	return nil
 }
 

@@ -21,4 +21,5 @@ func TestSaveMatrix(t *testing.T) {
 func TestCompression(t *testing.T) {
 	a := LoadCSV("bigdata.csv")
 	a.ToGZ("bigdata")
+	a.ToCSV("bigdata.csv")
 }
