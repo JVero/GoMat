@@ -23,9 +23,10 @@ func TestAugmented(t *testing.T) {
 	aug := makeAugmentedMatrix(testMat)
 	aug.ToCSV("data/augtest.csv")
 }
-
+/*
 func TestInvert(t *testing.T) {
 	testMat := LoadCSV("data/bigdata.csv")
 	inv := testMat.invert()
 	inv.ToCSV("data/biginverse.csv")
 }
+*/

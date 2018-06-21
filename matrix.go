@@ -13,6 +13,12 @@ type Matrix struct {
 	values  []float64
 }
 
+type MatGob struct {
+	NumRows int
+	NumCols int
+	Values []float64
+}
+
 // Empty creates an empty 2D Matrix that is rowHeight x columnWidth
 func Empty(numRows int, numCols int) Matrix {
 	matVals := make([]float64, numRows*numCols)
@@ -23,7 +29,8 @@ func (m *Matrix) Get(row int, column int) float64 {
 	if row > m.numRows || column > m.numCols {
 		panic("Out of range")
 	}
-	return m.values[m.numCols*row+column]
+	index := m.numCols*row + column
+	return m.values[index]
 }
 
 func (m *Matrix) assignValue(row int, column int, val float64) {

@@ -3,11 +3,13 @@ package matrix
 // The purpose of this file is to facilitate io functions, such as loading or saving matrices
 import (
 	"bufio"
+	"encoding/gob"
 	"compress/gzip"
 	"encoding/csv"
 	"fmt"
 	"io/ioutil"
 	"os"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -103,4 +105,32 @@ func (mat Matrix) ToGZ(filename string) error {
 	w.Close()
 	os.Remove("data/tempfile.csv")
 	return nil
+}
+
+// ToGob saves the matrix as a gob file
+func (mat Matrix) ToGob(filename string) error {
+	matgob := MatGob{mat.numRows, mat.numCols, mat.values}
+	file, err := os.Create(filename)
+	if err != nil {
+		return err
+	}
+	enc := gob.NewEncoder(file)
+	enc.Encode(matgob)
+	file.Close()
+	println("E")
+	return nil
+}
+	
+func LoadGob(filename string) Matrix {
+	var matgob MatGob
+	file, err := os.Open(filename)
+	if err != nil {
+		log.Fatal(err)
+	}
+	dec := gob.NewDecoder(file)
+	err = dec.Decode(&matgob)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return Matrix{matgob.NumRows, matgob.NumCols, matgob.Values}
 }

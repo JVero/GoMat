@@ -1,0 +1,7 @@
+goos: linux
+goarch: amd64
+pkg: gomat
+BenchmarkBigMatMul-12    	       1	2938733629 ns/op
+BenchmarkStrassen-12     	       1	2469723765 ns/op
+PASS
+ok  	gomat	5.424s

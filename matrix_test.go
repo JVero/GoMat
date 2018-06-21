@@ -52,6 +52,7 @@ func TestSub(t *testing.T) {
 
 func TestBigAdd(t *testing.T) {
 	testMat := LoadCSV("data/bigdata.csv")
+	println(testMat.numRows, testMat.numCols)
 	_ = testMat.Add(testMat)
 }
 
@@ -126,9 +127,16 @@ func TestTranspose(t *testing.T) {
 }
 
 func BenchmarkBigMatMul(b *testing.B) {
+	testMat := LoadCSV("data/bigdata.csv")
 	for i := 0; i < b.N; i++ {
-		testMat := LoadCSV("data/bigdata.csv")
 		_ = testMat.multiply(testMat)
+	}
+}
+
+func BenchmarkStrassen(b *testing.B){
+	testMat := LoadCSV("data/bigdata.csv")
+	for i:= 0; i < b.N; i++{
+		_ = testMat.Strassen(testMat)
 	}
 }
 
@@ -142,15 +150,17 @@ func TestPartition(t *testing.T) {
 	padded := Pad(testMat)
 	_, _, _, _ = Partition(padded)
 }
-
+/*
 func TestCompose(t *testing.T) {
 	testMat := LoadCSV("data/sampledata1.csv")
 	padded := Pad(testMat)
 	_, _, _, _ = Partition(padded)
 }
-
+*
+/*
 func TestStrassen(t *testing.T) {
 	bigMat := LoadCSV("data/bigdata.csv")
 	newFile := bigMat.Strassen(bigMat)
 	newFile.ToCSV("data/bigStrassen.csv")
 }
+*/

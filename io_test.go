@@ -23,3 +23,14 @@ func TestCompression(t *testing.T) {
 	a.ToGZ("data/bigdata")
 	a.ToCSV("data/bigdata.csv")
 }
+
+func TestGob(t *testing.T) {
+	a := LoadCSV("data/sampledata.csv")
+	a.ToGob("data/sampledata.gob")
+}
+
+func TestGobLoad(t *testing.T) {
+	_ = LoadGob("data/sampledata.gob")
+}
+
+
