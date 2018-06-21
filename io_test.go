@@ -32,5 +32,3 @@ func TestGob(t *testing.T) {
 func TestGobLoad(t *testing.T) {
 	_ = LoadGob("data/sampledata.gob")
 }
-
-

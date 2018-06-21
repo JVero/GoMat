@@ -16,7 +16,7 @@ type Matrix struct {
 type MatGob struct {
 	NumRows int
 	NumCols int
-	Values []float64
+	Values  []float64
 }
 
 // Empty creates an empty 2D Matrix that is rowHeight x columnWidth

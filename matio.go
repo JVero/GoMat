@@ -3,13 +3,13 @@ package matrix
 // The purpose of this file is to facilitate io functions, such as loading or saving matrices
 import (
 	"bufio"
-	"encoding/gob"
 	"compress/gzip"
 	"encoding/csv"
+	"encoding/gob"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"log"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -120,7 +120,7 @@ func (mat Matrix) ToGob(filename string) error {
 	println("E")
 	return nil
 }
-	
+
 func LoadGob(filename string) Matrix {
 	var matgob MatGob
 	file, err := os.Open(filename)

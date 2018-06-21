@@ -133,9 +133,9 @@ func BenchmarkBigMatMul(b *testing.B) {
 	}
 }
 
-func BenchmarkStrassen(b *testing.B){
+func BenchmarkStrassen(b *testing.B) {
 	testMat := LoadCSV("data/bigdata.csv")
-	for i:= 0; i < b.N; i++{
+	for i := 0; i < b.N; i++ {
 		_ = testMat.Strassen(testMat)
 	}
 }
@@ -150,6 +150,7 @@ func TestPartition(t *testing.T) {
 	padded := Pad(testMat)
 	_, _, _, _ = Partition(padded)
 }
+
 /*
 func TestCompose(t *testing.T) {
 	testMat := LoadCSV("data/sampledata1.csv")
